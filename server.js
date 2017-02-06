@@ -43,7 +43,7 @@ app.get("/new/*", function(req, res){
     });
 
     //validate url format
-    if(url.originalUrl.match(/^((https?|ftp):\/\/)?([\da-z\-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)){
+    if(url.originalUrl.match(/^((https?|ftp):\/\/)([\da-z\-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)){
         ShortenedUrl.findOne({originalUrl : url.originalUrl}, function(error, foundUrl){
             if(error){
                console.log(error);
