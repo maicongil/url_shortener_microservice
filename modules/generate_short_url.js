@@ -1,7 +1,7 @@
 var GenerateShortUrl = (function () {
 
     var randomInt = function(){
-        return  Math.floor(Math.random() * 10).toString();
+        return  Math.floor(Math.random() * 1000).toString();
     }
 
     var generateRandomIntUrl = function(){
