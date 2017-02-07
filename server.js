@@ -4,15 +4,13 @@ var express = require("express"),
     path = require("path"),
     app = express(),
     port = process.env.PORT || 8000,
-    ShortenedUrl = require("./models/shortened_url.js");
+    mongo_url = process.env.MONGO_URL || "mongodb://localhost/url_shortener_microservice",
+    ShortenedUrl = require("./models/shortened_url.js"),
+    GenerateShortUrl = require("./modules/generate_short_url.js");
 
-mongoose.connect("mongodb://localhost/url_shortener_microservice");
+mongoose.connect(mongo_url);
 
 app.use(morgan("combined"));
-
-function getRandom(){
-    return  Math.floor(Math.random() * 10000).toString();
-}
 
 //index page
 app.get("/", function(req, res){
@@ -48,11 +46,11 @@ app.get("/new/*", function(req, res){
             if(error){
                console.log(error);
             }else{
-                //if exists, don't create a new shortned ulr, just return
+                //if exists, don't create a new shortned ulr, just return foundUrl
                 if(foundUrl){ 
                      res.send({"originalUrl" : foundUrl.originalUrl, "shortenedUrl" : foundUrl.shortenedUrl});
                 }else{
-                    url.shortenedUrl = getRandom();
+                    url.shortenedUrl = GenerateShortUrl.generateRandomIntUrl();
                     url.save( function(error, insertedUrl){
                         if(error){
                             console.log(error);
